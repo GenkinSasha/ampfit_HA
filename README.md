@@ -14,6 +14,7 @@ To clean:
 
 To test:
         bin/test
+
 Usage:
 ret_code_t my_malloc_init(void *mem_block, size_t mem_size);
 - initialize the memory manager, by receiving a continuous memory block and its size (to be used for memory allocation) and
