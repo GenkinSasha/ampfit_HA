@@ -3,10 +3,7 @@
 my_malloc is a small memory manager - simple utilite for memory allocation in embedded system.
 version 0.1
 
-To build static library only:
-    make my_malloc
-
-To build static library and test target:
+To build test target only:
     make test
 
 To build all:
@@ -16,7 +13,7 @@ To clean:
     make clean
 
 To test:
-        ./my_malloc_test
+        bin/test
 Usage:
 ret_code_t my_malloc_init(void *mem_block, size_t mem_size);
 - initialize the memory manager, by receiving a continuous memory block and its size (to be used for memory allocation) and
