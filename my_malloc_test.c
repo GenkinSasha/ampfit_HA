@@ -19,9 +19,8 @@ void mem_deinit(){
     memset(test_mem_pool, 0, MAX_POOL_SIZE / 2);
 }
 
-/* test case #1: request correct memory pool
-   expected: PASS
- */
+/** test case #1: request correct memory pool
+   expected: PASS */
 test_result_t test_case_1(){
     ret_code_t ret;
     ret = my_malloc_init(test_mem_pool, MAX_POOL_SIZE / 2);
@@ -30,9 +29,8 @@ test_result_t test_case_1(){
     return PASS;
 }
 
-/* test case #2: request incorrect memory pool (very small)
-   expected: FAIL
- */
+/** test case #2: request incorrect memory pool (very small)
+   expected: FAIL */
 test_result_t test_case_2(){
     ret_code_t ret;
     int test_block_size; 
@@ -44,6 +42,8 @@ test_result_t test_case_2(){
     return PASS;
 }
 
+/** Test case #3: request memory block before memory pool initialized.
+   Expected: FAIL */
 test_result_t test_case_3(){
     ret_code_t ret;
 
@@ -54,6 +54,7 @@ test_result_t test_case_3(){
     return PASS;
 }
 
+/** Test case #4: call free() for wrong block addresses. Expected: FAIL */
 test_result_t test_case_4(){
     ret_code_t ret;
 
@@ -76,6 +77,8 @@ test_result_t test_case_4(){
     return PASS;
 }
 
+/** Test case #5: call malloc() after free() - should cause to merge() call. 
+    Expected: PASS */
 test_result_t test_case_5(){
     ret_code_t ret;
     int i, block_size;
@@ -98,8 +101,8 @@ test_result_t test_case_5(){
         if(ret != my_malloc_ok)
             return FAIL;
         // request new block 5K size
-            block_size = 5;
-            ret = my_malloc_alloc(block_size * 1024, (void *)&test_blocks_addr[1]);
+        block_size = 5;
+        ret = my_malloc_alloc(block_size * 1024, (void *)&test_blocks_addr[1]);
             if(ret != my_malloc_ok)
                 return FAIL;
         return PASS;
