@@ -110,34 +110,39 @@ test_result_t test_case_5(){
     return FAIL;
 }
 
-/*
-In this test I found an error in memory managing algorythm.
-To be debugged....
-*/
-/*test_result_t test_case_3(){
-    int i, block_size;
+/**
+ Request 10 blocks, shuffle pointers, delete
+ */
+test_result_t test_case_6(){
+    int i, j, block_size;
+    void *temp_ptr;
     ret_code_t ret;
 
-    for(i = 0; i < 10; i++){
-        block_size = 2; //rand() % 10 + 1;
-        ret = my_malloc_alloc(block_size * 1024, (void *)&test_blocks_addr[i]);
-        if(ret != my_malloc_ok)
-            return FAIL;
+    mem_deinit();
+    ret = my_malloc_init(test_mem_pool, 20 * 1024);      //request 20K
+    if(ret == my_malloc_ok){
+        for(i = 0; i < 10; i++){
+            block_size = 2; //rand() % 3 + 1;
+            ret = my_malloc_alloc(block_size * 1024, (void *)&test_blocks_addr[i]);
+            if(ret != my_malloc_ok)
+                return FAIL;
+        }
+        // shuffle pointers in random way:
+        for(i = 0; i < 5; i++){
+            j = rand() % 10;
+            temp_ptr = test_blocks_addr[j];
+            test_blocks_addr[j] = test_blocks_addr[10 - j];
+            test_blocks_addr[10 - j] = temp_ptr;
+        }
+        // free all alocated blocks        
+        for(i = 0; i < 10; i++){
+            ret = my_malloc_free(test_blocks_addr[i]);
+            if(ret != my_malloc_ok)
+                return FAIL;
+        }
     }
     return PASS;
 }
-
-test_result_t test_case_4(){
-    int i;
-    ret_code_t ret;
-
-    for(i = 0; i < 10; i++){
-        ret = my_malloc_free(test_blocks_addr[i]);
-            if(ret != my_malloc_ok)
-                return FAIL;
-    }
-    return PASS;
-}*/
 
 int main(){
     srand(19700101);
@@ -153,6 +158,8 @@ int main(){
     printf((test_case_4()) == PASS?"PASS":"FAIL");
     printf("\nTest case #5: call malloc() after free() - should cause to merge() call. Expected: PASS\n");
     printf((test_case_5()) == PASS?"PASS":"FAIL");
+    printf("\nTest case #6: request 10 memory blocks of 2KB. Expected: PASS\n");
+    printf((test_case_6()) == PASS?"PASS":"FAIL");
 
     printf("\n");
 

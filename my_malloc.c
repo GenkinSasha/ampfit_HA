@@ -165,8 +165,16 @@ ret_code_t my_malloc_free(void *mem_to_free){
         --curr;
         curr->free = FREE;
         curr->allocated = 0;    // deallocate
-        //merge_old();
-        merge(curr);
+
+        if (curr->prev && curr->prev->free)
+        {
+            merge(curr->prev);
+        }
+
+        if (curr->next)
+        {
+            merge(curr);
+        }
         return my_malloc_ok;
     }
     else
